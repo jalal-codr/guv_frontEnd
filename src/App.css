@@ -1,0 +1,348 @@
+.btn1{
+  margin-left: 42%;
+  margin-top: 24%;
+  background-color: aqua;
+  width: 10rem;
+}
+.p_name{
+  margin-left: 7.5rem;
+  margin-top: 0.2rem;
+  font-size: 1.5rem;
+}
+.message_cont{
+  margin-left: 50%;
+  margin-top: 40%;
+}
+.friends{
+  background-color: white;
+  width: 92%;
+  height: 3rem;
+  margin-top: 0.2rem;
+  border-radius: 25px;
+}
+.card_div{
+  margin-left: 0.5rem;
+  margin-bottom: 1rem;
+}
+.friends-cont{
+  height: 40rem;
+  width: 29%;
+  overflow-y: scroll;
+}
+.blog_div{
+  height: 40rem;
+  width: 25rem;
+  margin-top: 1rem;
+  margin-left: 30%;
+  overflow-y: scroll;
+}
+.createChatBtn{
+  margin-left: 23%;
+  margin-top: -3.2%;
+}
+.chat_box{
+  margin-top: -4rem;
+  margin-left: 34%;
+}
+.chatin{
+  margin-top: 0.4rem;
+}
+.message_box{
+  background-color: white;
+  border-radius: 25px;
+  width: 90rem;
+  height: 42rem;
+  overflow-y: scroll;
+}
+.btn_send{
+  margin-left: 90%;
+  margin-top: -3.5rem;
+}
+.req_div{
+  margin-left: 35%;
+  margin-bottom: 1rem;
+}
+.profile_img{
+  border-radius: 100px;
+}
+.img_{
+  border-radius: 100px;
+}
+.txtA{
+  width: 60%;
+  height: 5rem;
+}
+.txtA_div{
+  margin-left: 2rem;
+}
+.btn1{
+  margin-top: -0px;
+  margin-left: 4rem;
+  margin-top: 1.0rem;
+  width: 10rem;
+}
+.btn1_div{
+  margin-top: -4%;
+  margin-left: 88%;
+}
+.file_inpDiv{
+  margin-left: 55rem;
+  margin-top: -5%
+}
+.not_{
+  padding-left: 0.7;
+  width: 0rem;
+  height: 0rem;
+}
+.creatChat_{
+  margin-top: 0.2rem;
+}
+.create_1{
+  width: 80%;
+}
+.blog{
+  margin-top: 0.2rem;
+  margin-right: 0%;
+  width: 80%;
+}
+.chatin{
+  width: 80%;
+  height: 3rem;
+}
+.chat_div1{
+  margin-top: 3rem;
+  width: 20%;
+  margin-top: -0rem;
+}
+.chat_name{
+  width: 15rem;
+  padding-bottom: 10px;
+}
+.chat_box_m{
+  margin-left: 80%;
+}
+.backChat{
+  margin-left: 0%;
+  margin-top: 0rem;
+  width: 5rem;
+}
+
+.blogs_chat{
+  height: 40rem;
+  width: 25rem;
+  margin-top: -40rem;
+  margin-left: 50%;
+  overflow-y: scroll;
+}
+.likes{
+  width: 3rem;
+  margin-top: 1rem;
+}
+.card-actions{
+  width: 23rem;
+  margin-left: -1.3rem;
+  margin-top: 3.5rem;
+
+}
+.comennts{
+  margin-right: 10rem;
+  margin-top: 0.8rem;
+}
+.comments_div{
+  overflow-y: scroll;
+  width: 40%;
+  margin-left: 30%;
+  height: 42.5rem;
+  margin-top: 0.5rem;
+}
+.comment_entery{
+  height: 5rem;
+  width: 36rem;
+  margin-left: 27rem;
+}
+.btn_back_comment{
+  width: 5rem;
+  margin-top: -4rem;
+  margin-left: -30%;
+}
+.textarea_comment{
+  width: 25rem;
+}
+.btn_comment{
+  margin-left: 29rem;
+  margin-top: -4.6rem;
+}
+.no_nots{
+  margin-left: 44%;
+}
+.nots_div{
+  overflow-y: scroll;
+  height: 44.5rem;
+  width: 40rem;
+  margin-left: 15rem;
+}
+.user_profile{
+  width: 50%;
+  height: 25rem;
+  margin-left: 30rem;
+}
+.email_div_pr{
+  margin-left: 7rem;
+  margin-top: -4.5rem;
+}
+.name_div_p{
+  margin-top: 1.5rem;
+}
+.num_blogs{
+  margin-left: 10rem;
+  margin-top: -3.5rem;
+}
+.num_freinds{
+  margin-left: 27rem;
+  margin-top: -3rem;
+}
+.p_num{
+  margin-left: 1rem;
+}
+.logout_btn{
+  margin-left: 8rem;
+  margin-top: 5.5rem;
+}
+.blogs_profile{
+  width: 28%;
+  height: 32.5rem;
+  margin-top: -4.5rem;
+  margin-left: 35%;
+  overflow-y: scroll;
+}
+.delete_blog_btn{
+  margin-left: 18rem;
+  margin-top: -2.5rem;
+}
+.blog_txt{
+  margin-top: 2.5rem;
+}
+
+@media (max-width:430px){
+  .chat{
+   width: 20rem;
+  }
+  .blogs_profile{
+    width: 27rem;
+    height: 38.5rem;
+    margin-top: 0.5rem;
+    margin-left: -0.4rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .user_profile{
+    width: 100%;
+    height: 15rem;
+    margin-left: 0rem;
+  }
+  .logout_btn{
+    margin-left: 4rem;
+    margin-top: 2.5rem;
+  }
+  .num_blogs{
+    margin-left: 10rem;
+    margin-top: -3.5rem;
+  }
+  .num_freinds{
+    margin-left: 17rem;
+    margin-top: -3rem;
+  }
+  .email_div_pr{
+    margin-left: 7rem;
+    margin-top: -4.5rem;
+  }
+  .btn1{
+    margin-left: 30%;
+    margin-top: 50%;
+    background-color: orange;
+  }
+  .req_div{
+    margin-left: 0%;
+  }
+  .file_inpDiv{
+    margin-left: -5%;
+    margin-top: 0.5rem;
+  }
+  .btn1_div{
+    margin-left: 15rem;
+    margin-top: -8rem;
+    width: 7rem;
+    height: 4rem;
+  }
+  .blog_div{
+    margin-top: 5rem;
+    margin-left: -0.4rem;
+  }
+  .createChatBtn{
+    margin-top: 0.3rem;
+    margin-left: -0.1rem;
+  }
+  .comment_entery{
+    height: 5rem;
+    margin-left: 0rem;
+    width: 25rem;
+  }
+  .textarea_comment{
+    width: 15rem;
+  }
+  .btn_comment{
+    margin-left: 19rem;
+    margin-top: -4rem;
+  }
+  .btn_back_comment{
+    width: 5rem;
+    margin-left: 76%;
+    margin-top: 0.6rem;
+  }
+
+  .friends-cont{
+    height: 40rem;
+    width: 70rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    overflow-y: scroll;
+  }
+  .message_box{
+    background-color: white;
+    border-radius: 25px;
+    width: 24rem;
+    height: 46rem;
+    overflow-y: scroll;
+  }
+  .btn_send{
+    margin-left: 19.7rem;
+  }
+  .backChat{
+    margin-left: 0%;
+    margin-top: 0rem;
+    width: 5rem;
+  }
+  .no_nots{
+    margin-left: 30%;
+  }
+  .req_div{
+    margin-left: 35%;
+    margin-bottom: 1rem;
+  }
+  .nots_div{
+    overflow-y: scroll;
+    height: 44.5rem;
+    width: 40rem;
+    margin-left: -13.5rem;
+  }
+  .comments_div{
+    width: 20rem;
+    margin-left: 2.5rem;
+  }
+}
+@media (max-width:768px){
+  .btn1{
+    margin-top: 55%;
+    margin-right: 25%;
+  }
+}
