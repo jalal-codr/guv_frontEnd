@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import {useCookies} from 'react-cookie'
 import axios from 'axios';
 import Nav from '../Components/Nav';
 import Blog from '../Components/Blog';
@@ -9,7 +8,6 @@ import {onAuthStateChanged} from 'firebase/auth'
 import {auth} from "../FirebaseConfig"
 
 function Home() {
-    const [cookies, setCookie] = useCookies(['user']);
     const [blogs,setBlogs] = useState([])
     const [user,setUser] = useState()
 
@@ -30,8 +28,15 @@ function Home() {
 
     const getblogs = async()=>{
       try{
-        const url = 'https://guv-n5s8.onrender.com/get-blogs'
-        axios.get(url)
+        const options = {
+          method: "GET",
+          url:"https://guv-n5s8.onrender.com/get-blogs",
+          headers: {
+              accept: "application/json",
+              authorization: `Bearer ${user.accessToken}`
+          },
+        };
+        axios.request(options)
         .then((data)=>{
           setBlogs(data.data.reverse())
           // console.log(blogs)
@@ -47,8 +52,10 @@ function Home() {
     }
 
     useEffect(()=>{
-      getblogs();
-    },[])
+      if(user){
+        getblogs();
+      }
+    },[user])
 
     useEffect(()=>{
       socket.on("GetBlogs",()=>{

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import {useCookies} from 'react-cookie'
 import Nav from './Nav';
 import { socket } from '../sockets';
@@ -27,19 +27,30 @@ function CreateChat() {
 
 
     const click = ()=>{
-        const url = 'https://guv-n5s8.onrender.com/create-request'
-        const data={
-            from:user.email,
-            fromImg:user.photo,
-            to:person
+        if(user){
+            const data={
+                from:user.email,
+                fromImg:user.photoURL,
+                to:person
+            }
+            const options = {
+                method: "POST",
+                url:"https://guv-n5s8.onrender.com/create-request",
+                headers: {
+                    accept: "application/json",
+                    authorization: `Bearer ${user.accessToken}`
+                },
+                data:data,
+              };
+            axios.request(options)
+            .then((res)=>{
+                socket.emit("Request")
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
         }
-        axios.post(url,data)
-        .then((res)=>{
-            socket.emit("Request")
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
+ 
     }
   return (
     <>

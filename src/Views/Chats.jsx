@@ -13,7 +13,6 @@ function Chats() {
   const [friends,setFriends] = useState([])
   const [blogs,setBlogs] = useState([])
   const [screen,setScreen] = useState('')
-  const [cookies] = useCookies(['user']);
   const [person,setPerson] = useState();
   const mobileScreen =430
   const screenWidth = window.innerWidth;
@@ -21,7 +20,7 @@ function Chats() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
+        setPerson(currentUser);
     });
 
 
@@ -54,9 +53,19 @@ function Chats() {
   const getChats = async()=>{
     try{
       const email = {
-        email:person.email}
-      const url='https://guv-n5s8.onrender.com/get-friends'
-      axios.put(url,email)
+        email:person.email
+      }
+
+      const options = {
+        method: "PUT",
+        url:"https://guv-n5s8.onrender.com/get-friends",
+        headers: {
+            accept: "application/json",
+            authorization: `Bearer ${person.accessToken}`
+        },
+        data:{email:person.email},
+      };
+      axios.request(options)
       .then((data)=>{
         setFriends(data.data.reverse())
       })
@@ -71,11 +80,17 @@ function Chats() {
 
   const  getBlogs = async()=>{
     try{
-      const url = 'https://guv-n5s8.onrender.com/get-blogs'
-      axios.get(url)
+      const options = {
+        method: "GET",
+        url:"https://guv-n5s8.onrender.com/get-blogs",
+        headers: {
+            accept: "application/json",
+            authorization: `Bearer ${person.accessToken}`
+        },
+      };
+      axios.request(options)
       .then((data)=>{
         setBlogs(data.data.reverse())
-        // console.log(blogs)
       })
       .catch((err)=>{
         console.log(err)
@@ -87,8 +102,10 @@ function Chats() {
   }  
 
   useEffect(()=>{
-    getChats()
-  },[])
+    if(person){
+      getChats()
+    }
+  },[person])
 
   useEffect(()=>{
     socket.on("getChats",()=>{
@@ -98,8 +115,10 @@ function Chats() {
 
 
   useEffect(()=>{
-    getBlogs()
-  },[])
+    if(person){
+      getBlogs()
+    }
+  },[person])
 
   useEffect(()=>{
     socket.on("GetBlogs",()=>{

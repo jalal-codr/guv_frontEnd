@@ -8,7 +8,6 @@ import {auth} from '../FirebaseConfig'
 
 
 function Chat({data}) {
-    const [cookies] = useCookies(['user']);
     const [Chatcookies,setCookie,] = useCookies(['chat']);
     const [user,setUser] = useState();
     
@@ -25,56 +24,60 @@ function Chat({data}) {
 
 
     const btnClick=()=>{
-        if(data.from==user.email){
-            setCookie('chat',{
-                to:data.to,
-                room:data.room
-            })
-            window.location.href = '/chat-page'
-        }else{
-            setCookie('chat',{
-                to:data.from,
-                room:data.room
-            })
-            socket.emit('joinRoom', data.room)
-            window.location.href = '/chat-page'
+        if(user){
+            if(data.from==user.email){
+                setCookie('chat',{
+                    to:data.to,
+                    room:data.room
+                })
+                window.location.href = '/chat-page'
+            }else{
+                setCookie('chat',{
+                    to:data.from,
+                    room:data.room
+                })
+                socket.emit('joinRoom', data.room)
+                window.location.href = '/chat-page'
+            }
         }
     }
 
     const render = ()=>{
-        if(data.from==user.email){
-            return(<>
-            <div className='chat_div1'>
-            <div className="chat  chat-start">
-                <div className="chat-image avatar">
-                    <div className="w-10 rounded-full">
-                    <img alt="Tailwind CSS chat bubble component" src={data.toImg} />
+        if(user){
+            if(data.from==user.email){
+                return(<>
+                <div className='chat_div1'>
+                <div className="chat  chat-start">
+                    <div className="chat-image avatar">
+                        <div className="w-10 rounded-full">
+                        <img alt="Tailwind CSS chat bubble component" src={data.toImg} />
+                        </div>
+                    </div>
+                    <button className='chat_name' onClick={btnClick}>
+                    <div className="chat-bubble">{data.to}</div>
+                    </button>
                     </div>
                 </div>
-                <button className='chat_name' onClick={btnClick}>
-                <div className="chat-bubble">{data.to}</div>
-                </button>
+    
+                </>)
+            }
+            else if(data.to == user.email){
+                return(<>
+                <div className='chat_div1' >
+                <div className="chat chat_div chat-start">
+                <div className="chat-image avatar">
+                    <div className="w-10 rounded-full">
+                    <img alt="Tailwind CSS chat bubble component" src={data.fromImg} />
+                    </div>
                 </div>
-            </div>
-
-            </>)
-        }
-        else if(data.to == user.email){
-            return(<>
-            <div className='chat_div1' >
-            <div className="chat chat_div chat-start">
-            <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                <img alt="Tailwind CSS chat bubble component" src={data.fromImg} />
+                    <button className='chat_name' onClick={btnClick}> 
+                        <div className="chat-bubble">{data.from}</div>
+                    </button>
                 </div>
-            </div>
-                <button className='chat_name' onClick={btnClick}> 
-                    <div className="chat-bubble">{data.from}</div>
-                </button>
-            </div>
-            </div>
-
-            </>)
+                </div>
+    
+                </>)
+            }
         }
     }
   return (

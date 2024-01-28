@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Nav from '../Components/Nav'
-import {useCookies} from 'react-cookie'
 import Blog from '../Components/Blog'
-import {onAuthStateChanged} from 'firebase/auth'
+import {onAuthStateChanged,signOut} from 'firebase/auth'
 import {auth} from "../FirebaseConfig"
 
 function Profile() {
-  const [cookies,removeCookie] = useCookies(['user']);
   const [friends,setFriends] =  useState([])
   const [blogs, setBlog] = useState ([])
   const [person,setPerson] = useState();
@@ -25,7 +23,7 @@ function Profile() {
 
   const logout  = async()=>{
     try{
-      removeCookie('user')
+      await signOut(auth);
       window.location.href='/'
     }
     catch(err){
@@ -34,18 +32,26 @@ function Profile() {
   }
   const  getFriends = async ()=>{
     try{
-      const email = {
-        email:person.email
+      if(person){
+        const options = {
+          method: "PUT",
+          url:"https://guv-n5s8.onrender.com/get-friends",
+          headers: {
+              accept: "application/json",
+              authorization: `Bearer ${person.accessToken}`
+          },
+          data:{email:person.email},
+        };
+        await axios.request(options)
+        .then((data)=>{
+          setFriends(data.data)
+          
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
       }
-      const url='https://guv-n5s8.onrender.com/get-friends'
-      await axios.put(url,email)
-      .then((data)=>{
-        setFriends(data.data)
-        
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+ 
     }
     catch(err){
       console.log(err)
@@ -54,18 +60,25 @@ function Profile() {
 
   const getBlogs = async ()=>{
     try{
-      const email = {
-        email:person.email
+      if(person){
+        const options = {
+          method: "POST",
+          url:"https://guv-n5s8.onrender.com/get-my-blogs",
+          headers: {
+              accept: "application/json",
+              authorization: `Bearer ${person.accessToken}`
+          },
+          data:{email:person.email},
+        };
+        await axios.request(options)
+        .then((data)=>{
+          setBlog(data.data.reverse())
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
       }
-      const url='https://guv-n5s8.onrender.com/get-my-blogs'
-      await axios.post(url,email)
-      .then((data)=>{
-        setBlog(data.data.reverse())
-        
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+
     }
     catch(err){
       console.log(err)
@@ -73,17 +86,19 @@ function Profile() {
   }
 
   useEffect(()=>{
-    getFriends()
-    getBlogs()
-  },[])
+    if(person){
+      getFriends()
+      getBlogs()
+    }
+  },[person])
 
-  return (
-    <>
-    <Nav/>
-
-    <div className='user_profile' >
+  const render = ()=>{
+    if(person){
+      return(
+        <>
+        <div className='user_profile' >
     <a>
-    <img className='img_' src={person.photo} />
+    <img className='img_' src={person.photoURL} />
     </a>
     <div className='email_div_pr'>
     <p className="btn btn-ghost normal-case text-xl"> {person.email}</p>
@@ -109,7 +124,17 @@ function Profile() {
         blogs.map((element,index)=>(<Blog key={index} const data={element}/>))
       }
     </div>
-      
+        </>
+      )
+    }
+  }
+
+  return (
+    <>
+    <Nav/>
+    {
+      render()
+    }
     </>
   )
 }

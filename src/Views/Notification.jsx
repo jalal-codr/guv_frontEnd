@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Nav from '../Components/Nav'
-import {useCookies} from 'react-cookie'
 import axios from 'axios'
 import Request from '../Components/Request'
 import { socket } from '../sockets'
@@ -8,7 +7,6 @@ import {onAuthStateChanged}  from "firebase/auth"
 import {auth} from "../FirebaseConfig"
 
 function Notification() {
-    const [cookies] = useCookies(['user']);
     const [user,setUser] = useState();
     const [notifications,setNotifications]= useState([])
 
@@ -23,8 +21,11 @@ function Notification() {
   }, []);
 
     useEffect(()=>{
-      getNotifications()
-    },[])
+      if(user){
+        getNotifications()
+      }
+
+    },[user])
 
     useEffect(()=>{
       socket.on("GetNotifications",()=>{
@@ -35,11 +36,19 @@ function Notification() {
     const getNotifications = async()=>{
       const data = {
         email:user.email
-      } 
-      const url ='https://guv-n5s8.onrender.com/get-requests'
-      axios.put(url,data)
+      }
+      const options = {
+        method: "PUT",
+        url:"https://guv-n5s8.onrender.com/get-requests",
+        headers: {
+            accept: "application/json",
+            authorization: `Bearer ${user.accessToken}`
+        },
+        data:data,
+      }; 
+      axios.request(options)
       .then((data)=>{
-          setNotifications(data.data.reverse())
+        setNotifications(data.data.reverse())
       })
       .catch((err)=>{
           console.log(err)

@@ -8,7 +8,6 @@ import {auth} from "../FirebaseConfig"
 
 function ChatPage() {
     const [messages,setMessages]= useState([])
-    const [cookies] = useCookies(['user']);
     const [chatCookies,removeCookie] = useCookies(['chat']);
     const [user,setUser] = useState();
     const [text,setText] = useState('')
@@ -26,14 +25,24 @@ function ChatPage() {
 
     const getMessages  = async()=>{
       try{
-        const url = "https://guv-n5s8.onrender.com/get-messages"
-        axios.get(url)
-        .then((data)=>{
-          setMessages(data.data)
-        })
-        .catch((err)=>{
-          console.log(err)
-        })
+        if(user){
+          const options = {
+            method: "GET",
+            url:"https://guv-n5s8.onrender.com/get-messages",
+            headers: {
+                accept: "application/json",
+                authorization: `Bearer ${user.accessToken}`
+            },
+          };
+          axios.request(options)
+          .then((data)=>{
+            setMessages(data.data)
+          })
+          .catch((err)=>{
+            console.log(err)
+          })
+        }
+        
       }
       catch(err){
         console.log(err)
@@ -48,10 +57,12 @@ function ChatPage() {
     },[socket])
 
     useEffect(()=>{
-      socket.emit('joinRoom', chatCookies.chat.room)
-      getMessages();
+      if(user){
+        socket.emit('joinRoom', chatCookies.chat.room)
+        getMessages();
+      }
      
-    },[])
+    },[user])
 
 
 
@@ -74,8 +85,16 @@ function ChatPage() {
           to:chatCookies.chat.to,
           body:text
         }
-        const url ='https://guv-n5s8.onrender.com/new-message'
-        axios.post(url,newMsg)
+        const options = {
+          method: "POST",
+          url:"https://guv-n5s8.onrender.com/new-message",
+          headers: {
+              accept: "application/json",
+              authorization: `Bearer ${user.accessToken}`
+          },
+          data:newMsg,
+        };
+        axios.request(options)
         .then((data)=>{
           socket.emit("newMessage", chatCookies.chat.room )
         })

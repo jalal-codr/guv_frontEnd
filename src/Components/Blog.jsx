@@ -28,8 +28,16 @@ function Blog({data}) {
           blogId:data._id,
           email:user.email
         }
-        const url ="https://guv-n5s8.onrender.com/like_blog"
-        const  response = await axios.put(url,blog)
+        const options = {
+          method: "PUT",
+          url:"https://guv-n5s8.onrender.com/like_blog",
+          headers: {
+              accept: "application/json",
+              authorization: `Bearer ${user.accessToken}`
+          },
+          data:blog,
+        };
+        const  response = await axios.request(options)
         socket.emit("likes")
       }
       catch(err){
@@ -48,13 +56,17 @@ function Blog({data}) {
     }
 
     const ownBlog = ()=>{
-      if(data.email==user.email){
-        return(<>
-          <button onClick={deleteBlog} className="btn btn-square">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
-        </>)
-      }
+        if(user){
+          if(data.email==user.email){
+            return(<>
+              <button onClick={deleteBlog} className="btn btn-square">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </>)
+        }
+  
+        }
+ 
     }
 
     const  deleteBlog = async()=>{
@@ -62,8 +74,16 @@ function Blog({data}) {
         const blogId ={
           blogId:data._id,
         }
-        const url = 'https://guv-n5s8.onrender.com/delet-blog'
-        await axios.put(url,blogId)
+        const options = {
+          method: "PUT",
+          url:"https://guv-n5s8.onrender.com/delet-blog",
+          headers: {
+              accept: "application/json",
+              authorization: `Bearer ${user.accessToken}`
+          },
+          data:blogId,
+        };
+        await axios.request(options)
         .then(()=>{
           socket.emit('blogDeleted')
         })

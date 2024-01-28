@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import {useCookies} from 'react-cookie'
 import {socket} from '../sockets'
 import {onAuthStateChanged} from 'firebase/auth'
 import {auth} from "../FirebaseConfig"
 
 function TesxtArea() {
     const [message,setMessage]=useState("")
-    const [cookies] = useCookies(['user']);
     const [img,setImg] =useState('')
     const [base64Image, setBase64Image] = useState('');
     const [user,setUser] = useState();
@@ -32,58 +30,78 @@ function TesxtArea() {
 
     const submit = async()=>{
 
-        if(img){
+            if(img){
+                const formData = new FormData();
+                formData.append('image', img);
+                
 
-            const formData = new FormData();
-            formData.append('image', img);
+                const options = {
+                    method: "POST",
+                    url:"https://guv-n5s8.onrender.com/upload-image",
+                    headers: {
+                        accept: "application/json",
+                        authorization: `Bearer ${user.accessToken}`
+                    },
+                    data:formData,
+                  };
+                axios.request(options)
+                .then((response)=>{
+                    const data ={
+                        email:user.email,
+                        name:user.displayName,
+                        photo:user.photoURL,
+                        body:message,
+                        imgRef:response.data
+                    }
+                    const options = {
+                        method: "POST",
+                        url:"https://guv-n5s8.onrender.com/create-blog",
+                        headers: {
+                            accept: "application/json",
+                            authorization: `Bearer ${user.accessToken}`
+                        },
+                        data:data,
+                      };
 
-            const url1 ='https://guv-n5s8.onrender.com/upload-image'
-            axios.post(url1,formData)
-            .then((response)=>{
-                console.log(response.data)
-                const data ={
-                    email:user.email,
-                    name:user.name,
-                    photo:user.photo,
-                    body:message,
-                    imgRef:response.data
-                }
-                const url ='https://guv-n5s8.onrender.com/create-blog' 
-                axios.post(url,data)
-                .then((data)=>{
-                    console.log(data)
-        
+                    axios.request(options)
+                    .then((data)=>{
+                       
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
                 })
                 .catch((err)=>{
                     console.log(err)
                 })
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
-            
-            
-        }
-        else{    
-            const data ={
-                email:user.email,
-                name:user.name,
-                photo:user.photo,
-                body:message,
             }
-            console.log(data)
-            const url ='https://guv-n5s8.onrender.com/create-blog' 
-            axios.post(url,data)
-            .then((data)=>{
-                console.log(data)
-    
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
+            else{    
+                const data ={
+                    email:user.email,
+                    name:user.displayName,
+                    photo:user.photoURL,
+                    body:message,
+                }
+                const options = {
+                    method: "POST",
+                    url:"https://guv-n5s8.onrender.com/create-blog",
+                    headers: {
+                        accept: "application/json",
+                        authorization: `Bearer ${user.accessToken}`
+                    },
+                    data:data,
+                  };
+                axios.request(options)
+                .then((data)=>{
+                
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+            
+            }
+            socket.emit("newBlog")
         
-        }
-        socket.emit("newBlog")
     }
 
   return (

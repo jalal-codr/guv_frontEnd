@@ -9,7 +9,6 @@ import {auth} from "../FirebaseConfig"
 function Comments() {
     const [comment, setComment] = useState('')
     const [coments,setComments] =useState([])
-    const [cookies] = useCookies(['user']);
     const [commentCookies,setCookie,] = useCookies(['comment']);
     const blogId = commentCookies.comment.blogId
     const [user,setUser] = useState();
@@ -30,35 +29,52 @@ function Comments() {
         setComment(e.target.value);
     }
     const  btnClick = async()=>{
-        const newComment = {
-            blogId:blogId,
-            from:user.name,
-            comment:comment,
-            userImg:user.photo
-        }
-        const url ="https://guv-n5s8.onrender.com/new-comment"
-        const  response = await axios.post(url,newComment)
-        if(response){
-            socket.emit('newComment')
+        if(user){
+            const newComment = {
+                blogId:blogId,
+                from:user.email,
+                comment:comment,
+                userImg:user.photoURL
+            }
+            const options = {
+                method: "POST",
+                url:"https://guv-n5s8.onrender.com/new-comment",
+                headers: {
+                    accept: "application/json",
+                    authorization: `Bearer ${user.accessToken}`
+                },
+                data:newComment,
+              };
+            const  response = await axios.request(options)
+            if(response){
+                socket.emit('newComment')
+            }
         }
     }
 
     const getBlogComments = async()=>{
         try{
-            const data = {
-                blogId:blogId
+                const data = {
+                    blogId:blogId
+                }
+                const options = {
+                    method: "PUT",
+                    url:"https://guv-n5s8.onrender.com/get-comments",
+                    headers: {
+                        accept: "application/json",
+                        authorization: `Bearer ${user.accessToken}`
+                    },
+                    data:data,
+                  };
+                if(data){
+                    await axios.request(options)
+                    .then((datta)=>{
+                        setComments(datta.data);
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                    })
             }
-            const url = "https://guv-n5s8.onrender.com/get-comments"
-            if(data){
-                await axios.put(url,data)
-                .then((datta)=>{
-                    setComments(datta.data);
-                })
-                .catch((err)=>{
-                    console.log(err);
-                })
-            }
-
         }
         catch(err){
             console.log(err)
@@ -67,8 +83,11 @@ function Comments() {
 
 
     useEffect(()=>{
-        getBlogComments()
-    },[])
+        if(user){
+            getBlogComments()
+        }
+      
+    },[user])
 
     useEffect(()=>{
         socket.on("GetComments",()=>{
@@ -79,9 +98,6 @@ function Comments() {
     const backBtn = ()=>{
         window.location.href = '/home'
     }
-
-
-
 
 
   return (
