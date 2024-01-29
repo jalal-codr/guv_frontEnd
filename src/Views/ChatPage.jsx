@@ -50,7 +50,7 @@ function ChatPage() {
     }
 
     useEffect(()=>{
-      socket.on('getMessages',(data)=>{
+      socket.on('getMessages',()=>{
         getMessages();
       })
 
@@ -58,11 +58,10 @@ function ChatPage() {
 
     useEffect(()=>{
       if(user){
-        socket.emit('joinRoom', chatCookies.chat.room)
         getMessages();
       }
      
-    },[user])
+    },[user,socket])
 
 
 
@@ -79,7 +78,7 @@ function ChatPage() {
     const changeTxt =(e)=>{
       setText(e.target.value)
     }
-    const sendTxt =()=>{ 
+    const sendTxt =async()=>{ 
         const newMsg = {
           from:user.email,
           to:chatCookies.chat.to,
@@ -94,9 +93,9 @@ function ChatPage() {
           },
           data:newMsg,
         };
-        axios.request(options)
-        .then((data)=>{
-          socket.emit("newMessage", chatCookies.chat.room )
+        await axios.request(options)
+        .then(()=>{
+          socket.emit("newMessage")
         })
         .catch((err)=>{
           console.log(err)
