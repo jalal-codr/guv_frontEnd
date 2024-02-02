@@ -412,3 +412,62 @@
   }
 
 }
+@media (min-width: 822px) and (max-width: 1024px){
+  .file_inpDiv{
+    margin-left: 38rem;
+    margin-top: -6rem;
+  }
+  .btn1_div{
+    margin-top: 1rem;
+    margin-left: 52rem;
+  }
+  .blog_div{
+    height: 70rem;
+  }
+  .createChatBtn{
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  .friends-cont{
+    width: 18rem;
+    
+  }
+  .blogs_chat{
+    margin-left: 31rem;
+    height: 60rem;
+  }
+  .user_profile{
+    margin-left: 15rem;
+    margin-top: 1rem;
+    width: 37rem;
+  }
+  .logout_btn{
+    margin-left: 12rem;
+  }
+  .blogs_profile{
+    margin-top: 2rem;
+    width: 26rem;
+    height: 54rem;
+    margin-left: 20rem;
+  }
+  .nots_div{
+    height: 75rem;
+    margin-left: -1rem;
+    width: 102%;
+  }
+  .req_div{
+    margin-left: 21rem;
+    margin-top: 1rem;
+  }
+  .btn_comment{
+    margin-left: 26rem;
+    margin-top: rem;
+  }
+  .comment_entery{
+    margin-left: 22rem;
+  }
+  .btn_back_comment{
+    margin-left: -7rem;
+  }
+}
